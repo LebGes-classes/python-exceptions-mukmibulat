@@ -3,7 +3,10 @@ from menu import Menu
 
 def main() -> None:
     """
-    Запускает консольный интерфейс для работы с карточками товаров.
+    Запуск консольного интерфейса для работы с карточками товаров.
+
+    Предоставляет меню с возможностью создания, просмотра, изменения,
+    списания карточек и вывода списка всех карточек.
     """
 
     system = Menu()
@@ -51,55 +54,52 @@ def main() -> None:
 
             case "2":
                 card_id = input("Введите ID карточки: ").strip()
-
                 if not card_id:
+                    continue
+
+                # Проверка существования карточки
+                try:
+                    system.get_card(card_id)  # Просто проверяем существование
+                except ValueError:
+                    print(f"Карточка с ID {card_id} не найдена")
                     continue
 
                 data = {}
                 print("(Оставьте поле пустым, если не хотите менять)")
 
                 name = input("Новое наименование: ").strip()
-
                 if name:
                     data["name"] = name
 
                 quantity = input("Новое количество: ").strip()
-
                 if quantity:
                     data["quantity"] = int(quantity)
 
                 supplier = input("Новый поставщик: ").strip()
-
                 if supplier:
                     data["supplier"] = supplier
 
                 manufacturer = input("Новый производитель: ").strip()
-
                 if manufacturer:
                     data["manufacturer"] = manufacturer
 
                 cost = input("Новая стоимость: ").strip()
-
                 if cost:
                     data["cost"] = float(cost)
 
                 location = input("Новое местоположение: ").strip()
-
                 if location:
                     data["location"] = location
 
                 articul = input("Новый артикул: ").strip()
-
                 if articul:
                     data["articul"] = articul
 
                 guarantee = input("Новая гарантия: ").strip()
-
                 if guarantee:
                     data["guarantee"] = int(guarantee)
 
                 receipt = input("Новая дата поступления: ").strip()
-
                 if receipt:
                     data["receipt_date"] = receipt
 
@@ -108,21 +108,17 @@ def main() -> None:
                         system.update_card(card_id, data)
                     except ValueError as e:
                         print(f"Ошибка: {e}")
-
                     except Exception as e:
                         print(f"Ошибка при обновлении карточки: {e}")
 
             case "3":
                 card_id = input("Введите ID карточки: ").strip()
-
                 if not card_id:
                     continue
 
                 try:
                     data = system.get_card(card_id)
-
                     print("\n" + "-" * 40)
-
                     for key, value in data.items():
                         print(f"{key}: {value}")
                 except ValueError as e:
@@ -130,7 +126,6 @@ def main() -> None:
 
             case "4":
                 card_id = input("Введите ID карточки: ").strip()
-
                 if not card_id:
                     continue
 
