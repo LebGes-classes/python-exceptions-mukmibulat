@@ -3,7 +3,9 @@ from product_card import ProductCard
 
 class Menu:
     """
-    Система управления карточками, которая обеспечивает создание, хранение и операции с карточками товаров.
+    Класс управления карточками товаров, который
+
+    обеспечивает создание, хранение и операции с карточками товаров.
     """
 
     def __init__(self) -> None:
@@ -16,7 +18,7 @@ class Menu:
         Добавление новой карточки в систему.
 
         Args:
-            card_id: Айди карточки
+            card_id: Уникальный идентификатор карточки
             data: Словарь с данными для создания карточки
 
         Returns:
@@ -31,8 +33,20 @@ class Menu:
             raise ValueError(f"Карточка с ID {card_id} уже существует")
 
         card = ProductCard(
-            card_id, "", 0, "", "", 0.0, "", "", 0, ""
-        ).create(data)
+            card_id,
+            data.get("name", ""),
+            data.get("quantity", 0),
+            data.get("supplier", ""),
+            data.get("manufacturer", ""),
+            data.get("cost", 0.0),
+            data.get("location", ""),
+            data.get("articul", ""),
+            data.get("guarantee", 0),
+            data.get("receipt_date", "")
+        )
+
+        if card.get_status() == ProductCard.STATUS_DRAFT:
+            card.create(data)
 
         self.cards[card_id] = card
 
@@ -77,6 +91,25 @@ class Menu:
 
         return self.cards[card_id].get_data()
 
+    def get_card_object(self, card_id: str) -> ProductCard:
+        """
+        Получение объекта карточки по ID.
+
+        Args:
+            card_id: Идентификатор карточки
+
+        Returns:
+            ProductCard: Объект карточки
+
+        Raises:
+            ValueError: Если карточка с указанным ID не найдена
+        """
+
+        if card_id not in self.cards:
+            raise ValueError(f"Карточка {card_id} не найдена")
+
+        return self.cards[card_id]
+
     def write_off_card(self, card_id: str) -> ProductCard:
         """
         Списание карточки по ID.
@@ -105,16 +138,12 @@ class Menu:
 
         if not self.cards:
             print("\nНет созданных карточек")
-
         else:
             print("\n" + "=" * 60)
-
             for card in self.cards.values():
                 data = card.get_data()
-
                 print(
                     f"{data['ID']}: {data['Наименование']} | "
                     f"{data['Состояние']} | {data['Количество']} шт."
                 )
-
             print(f"\nВсего карточек: {len(self.cards)}")

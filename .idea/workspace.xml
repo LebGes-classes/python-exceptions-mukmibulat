@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a468c513-9041-4ed4-a112-2bd95947cbea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/menu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product_card.py" beforeDir="false" afterPath="$PROJECT_DIR$/product_card.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

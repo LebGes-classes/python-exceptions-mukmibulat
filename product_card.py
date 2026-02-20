@@ -302,7 +302,6 @@ class ProductCard:
         self.set_guarantee(data.get("guarantee", 0))
         self.set_receipt_date(data.get("receipt_date", ""))
         self.set_status(self.STATUS_IN_STOCK)
-
         print(f"Карточка {self._card_id} создана")
 
         return self
@@ -322,6 +321,7 @@ class ProductCard:
 
         Raises:
             ValueError: При попытке обновить списанную карточку
+                       или при передаче пустого словаря
             Exception: При ошибке валидации новых данных
         """
 
@@ -329,6 +329,9 @@ class ProductCard:
             raise ValueError(
                 "Невозможно изменить списанную карточку"
             )
+
+        if not data:
+            raise ValueError("Нет данных для обновления")
 
         if "name" in data:
             self.set_name(data["name"])
@@ -356,7 +359,6 @@ class ProductCard:
 
         if "receipt_date" in data:
             self.set_receipt_date(data["receipt_date"])
-
         print(f"Карточка {self._card_id} обновлена")
 
         return self
@@ -397,7 +399,7 @@ class ProductCard:
         """
         Списание карточки со статусом "на учёте".
 
-        При наличии остатков запрашивает подтверждение списания.
+        Запрашивает подтверждение списания для безопасности.
 
         Returns:
             ProductCard: Списанная карточка со статусом "списано"
@@ -411,17 +413,14 @@ class ProductCard:
                 f"Списание возможно только для статуса "
                 f"'{self.STATUS_IN_STOCK}'"
             )
+        print(f"Остаток на складе: {self._quantity} шт.")
 
-        if self._quantity > 0:
-            print(f"Остаток на складе: {self._quantity} шт.")
+        answer = input("Подтвердить списание? (да/нет): ").lower()
 
-            answer = input("Подтвердить списание? (да/нет): ").lower()
-
-            if answer != "да":
-                raise ValueError("Списание отменено пользователем")
+        if answer != "да":
+            raise ValueError("Списание отменено пользователем")
 
         self.set_status(self.STATUS_WRITTEN_OFF)
-
         print(f"Карточка {self._card_id} списана")
 
         return self
